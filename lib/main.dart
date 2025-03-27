@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/icecream.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class GradientScreen extends StatelessWidget {
+class GradientScreen extends StatefulWidget {
+  @override
+  _GradientScreenState createState() => _GradientScreenState();
+}
+
+class _GradientScreenState extends State<GradientScreen> {
+  int itemCount = 0; 
+
+  void _addItem() {
+    setState(() {
+      itemCount++;
+    });
+  }
+  void _removeItem() {
+    setState(() {
+      if (itemCount > 0) itemCount--;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +51,7 @@ class GradientScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 80), // Espaço do topo
+            const SizedBox(height: 80), 
             const Text(
               "HOW TO BURN OFF",
               style: TextStyle(
@@ -42,7 +61,7 @@ class GradientScreen extends StatelessWidget {
                 letterSpacing: 1.5,
               ),
             ),
-            const SizedBox(height: 20), // Espaço entre o texto e o container
+            const SizedBox(height: 20), 
             Expanded(
               child: Center(
                 child: Container(
@@ -78,7 +97,7 @@ class GradientScreen extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 10), // Espaço entre os textos
+                      const SizedBox(height: 10),
                       const Text(
                         "°  Mc Donald's Big Mac  °",
                         style: TextStyle(
@@ -87,8 +106,80 @@ class GradientScreen extends StatelessWidget {
                           color: Colors.black54,
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          const Divider(
+                            thickness: 2,
+                            color: Color.fromARGB(255, 231, 162, 106),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    const Color.fromARGB(255, 230, 187, 153),
+                                    const Color.fromARGB(255, 231, 162, 106),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 5,
+                                    spreadRadius: 2,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: const Text(
+                                "540 kcal",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: 40), 
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove, color: Colors.red, size: 30),
+                              onPressed: _removeItem,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                "$itemCount",
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add, color: Colors.green, size: 30),
+                              onPressed: _addItem,
+                            ),
+                          ],
+                        ),
+                      ),
                       const Spacer(),
-                      // Ícones na parte inferior
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Row(
@@ -96,29 +187,30 @@ class GradientScreen extends StatelessWidget {
                           children: [
                             _buildIconWithLabel(
                               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDuyhFQZspWy7qc8RvXfvd6uP9mKhk7EIJVg&s",
-                              "Corrida",
+                              "Alface",
                             ),
                             _buildIconWithLabel(
                               "https://cdn-icons-png.flaticon.com/512/1202/1202125.png",
-                              "Bicicleta",
+                              "Tomate",
                             ),
                             _buildIconWithLabel(
                               "https://cdn-icons-png.flaticon.com/512/5017/5017445.png",
-                              "Pular Corda",
+                              "Pão",
                             ),
                             _buildIconWithLabel(
                               "https://cdn-icons-png.flaticon.com/512/3199/3199950.png",
-                              "Musculação",
+                              "Queijo",
                             ),
                           ],
                         ),
                       ),
-                      // Seta para próxima tela
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MyWidget()),
+                            MaterialPageRoute(
+                              builder: (context) => DetalhePage(),
+                            ),
                           );
                         },
                         child: Padding(
@@ -150,78 +242,15 @@ class GradientScreen extends StatelessWidget {
             color: Colors.grey[200],
           ),
           padding: EdgeInsets.all(10),
-          child: Image.network(
-            imageUrl,
-            width: 40,
-            height: 40,
-          ),
+          child: Image.network(imageUrl, width: 40, height: 40),
         ),
         const SizedBox(height: 5),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ],
     );
   }
 }
 
-// Tela de destino
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.lightBlueAccent, Colors.blue[900]!],
-          ),
-        ),
-        child: Stack(
-          children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.8,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20), // Borda arredondada
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Botão para voltar
-            Positioned(
-              top: 40,
-              left: 20,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context); // Voltar para a tela anterior
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
